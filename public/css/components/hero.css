@@ -1,0 +1,30 @@
+.hero {
+    min-height: 90vh;
+}
+.hero > .row {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-content: center;
+    align-items: center;
+}
+.hero .left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.hero .left > .btn {
+    align-self: start;
+}
+.hero img {
+    display: none;
+}
+
+@media (min-width: 800px) {
+    .hero > .row {
+        grid-template-columns: 1fr 1fr;
+        gap: 100px;
+    }
+    .hero img {
+        display: block;
+    }
+}

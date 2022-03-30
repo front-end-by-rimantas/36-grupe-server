@@ -1,0 +1,33 @@
+.form {
+    display: grid;
+    gap: 20px;
+    width: 100%;
+}
+.form > .form-row {
+    display: grid;
+}
+.form > .form-row > label {
+    margin-bottom: 5px;
+}
+.form > .form-row > input,
+.form > .form-row > textarea {
+    padding: 0.5em 0;
+    font-size: 16px;
+    line-height: 1.5em;
+    border: none;
+    border-bottom: 1px solid #ccc;
+}
+.form > .form-row > textarea {
+    min-height: 5.5em;
+    max-height: 16em;
+    resize: vertical;
+}
+.form button {
+    justify-self: start;
+}
+
+::placeholder {
+    color: red;
+    font-size: 16px;
+    line-height: 1.5em;
+}

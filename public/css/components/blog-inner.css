@@ -1,0 +1,17 @@
+.blog-inner {
+    display: grid;
+    gap: 2em;
+    font-size: 1.5em;
+}
+.blog-inner > .title {
+    font-size: 4em;
+}
+.blog-inner > p {
+}
+.blog-inner > footer {
+    font-style: italic;
+    background-color: initial;
+}
+.blog-inner > footer::before {
+    content: '- ';
+}

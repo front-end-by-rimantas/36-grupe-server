@@ -26,6 +26,19 @@ async function servicesSection() {
         return data;
     }
 
+    const isValidService = (service) => {
+        if (typeof service !== 'object'
+            || typeof service.icon !== 'string'
+            || service.icon === ''
+            || typeof service.title !== 'string'
+            || service.title === ''
+            || typeof service.description !== 'string'
+            || service.description === '') {
+            return false;
+        }
+        return true;
+    }
+
     const renderList = async () => {
         const servicesData = await getServicesData();
         if (!Array.isArray(servicesData) ||
@@ -35,6 +48,9 @@ async function servicesSection() {
 
         let HTML = '';
         for (const service of servicesData) {
+            if (!isValidService(service)) {
+                continue;
+            }
             HTML += `<div class="service">
                         <i class="fa fa-${service.icon} icon"></i>
                         <h3 class="title">${service.title}</h3>

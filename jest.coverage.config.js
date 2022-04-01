@@ -1,9 +1,9 @@
 const config = {
     injectGlobals: true,
     testEnvironment: 'node',
-    verbose: true,
+    verbose: false,
     maxWorkers: '75%',
-    collectCoverage: false,
+    collectCoverage: true,
     // notify: true,
     // notifyMode: 'always',
 };

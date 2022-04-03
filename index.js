@@ -7,7 +7,7 @@ app.init = () => {
 
   // pasiruosti pradinius failus
 
-  // prisijungimas prie DB (duomenu baze) testas po klonavimo
+  // prisijungimas prie DB (duomenu baze) testas po klonavimo1
 
   // uzkurti pati serveri (musu programa)
   server.init();

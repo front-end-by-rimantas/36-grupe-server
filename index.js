@@ -5,7 +5,7 @@ const app = {};
 app.init = () => {
   // pasiruosti pradinius folder'ius
 
-  // pasiruosti pradinius failus TEST1
+  // pasiruosti pradinius failus
 
   // prisijungimas prie DB (duomenu baze)
 

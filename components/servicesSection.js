@@ -1,26 +1,30 @@
 import { file } from '../lib/file.js';
 import { utils } from '../lib/utils.js';
 
+const isValidString = (text, maxSize) => {
+    if (typeof text !== 'string'
+        || text === ''
+        || text.length > maxSize) {
+        return false;
+    }
+    return true;
+}
+
 const isValidService = (service) => {
     const servicesKeysCount = 3;
+    const maxIconLength = 20;
+    const maxTitleLength = 30;
+    const maxDescLength = 100;
     if (typeof service !== 'object'
         || Array.isArray(service)
         || service === null
         || Object.keys(service).length > servicesKeysCount
-        || Object.keys(service).length < servicesKeysCount) {
+        || Object.keys(service).length < servicesKeysCount
+        || !isValidString(service.icon, maxIconLength)
+        || !isValidString(service.title, maxTitleLength)
+        || !isValidString(service.description, maxDescLength)) {
         return false;
     }
-
-    // if (typeof service !== 'object'
-    //     || Object.keys(service).length > servicesKeysCount
-    //     || typeof service.icon !== 'string'
-    //     || service.icon === ''
-    //     || typeof service.title !== 'string'
-    //     || service.title === ''
-    //     || typeof service.description !== 'string'
-    //     || service.description === '') {
-    //     return false;
-    // }
     return true;
 }
 

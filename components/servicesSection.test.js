@@ -123,14 +123,14 @@ describe('Service description', () => {
         expect(isValidService({
             icon: 'globe',
             title: 'Title',
-            description: 'a'.repeat(101),
+            description: 'a'.repeat(201),
         })).toBeFalsy();
     })
     test('maksimalaus ilgio string', () => {
         expect(isValidService({
             icon: 'globe',
             title: 'Title',
-            description: 'a'.repeat(100),
+            description: 'a'.repeat(200),
         })).toBeTruthy();
     })
 })

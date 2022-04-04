@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "nodemon",
     "server": "NODE_ENV=production node .",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config ./jest.config.js --watchAll --passWithNoTests"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config ./jest.config.js --watchAll --passWithNoTests",
+    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config ./jest.coverage.config.js --watchAll --passWithNoTests"
   },
   "keywords": [],
   "author": "Rimantas",

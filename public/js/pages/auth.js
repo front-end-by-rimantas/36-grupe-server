@@ -23,5 +23,12 @@ submitDOM.addEventListener('click', (e) => {
         formData[id] = value;
     }
 
-    console.log(formData);
+    if (formData.pass === formData.repass) {
+        errorsDOM.innerText = '';
+    } else {
+        errorsDOM.innerText = 'Nesutampa slaptazodziai';
+        return;
+    }
+
+    console.log('SIUNCIAME I SERVERI:', formData);
 })

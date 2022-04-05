@@ -28,8 +28,8 @@ class PageRegister extends PageTemplate {
                                     <input id="email" data-validation="email" type="email" placeholder="Type email" required value="chuck@norris.com">
                                 </div>
                                 <div class="form-row">
-                                    <label for="pass">Password</label>
-                                    <input id="pass" data-validation="password" type="password" placeholder="Type password" required value="chuckchuckchuck">
+                                    <label for="password">Password</label>
+                                    <input id="password" data-validation="password" type="password" placeholder="Type password" required value="chuckchuckchuck">
                                 </div>
                                 <div class="form-row">
                                     <label for="repass">Repeat password</label>

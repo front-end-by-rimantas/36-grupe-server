@@ -1,4 +1,5 @@
 import { IsValid } from '../components/is-valid/IsValid.js';
+
 /*
 1) susirasti forma ir jos VISUS laukus
 2) surinkti informacija is formos
@@ -30,11 +31,14 @@ submitDOM.addEventListener('click', (e) => {
         formData[id] = value;
     }
 
-    if (formData.pass !== formData.repass) {
+    if (formData.password !== formData.repass) {
         errors.push('Nesutampa slaptazodziai');
     }
-
     errorsDOM.innerText = errors.join('\r\n');
 
-    console.log('SIUNCIAME I SERVERI:', formData);
+    if (errors.length === 0) {
+        delete formData.repass;
+        console.log('SIUNCIAME I SERVERI:', formData);
+    }
+
 })

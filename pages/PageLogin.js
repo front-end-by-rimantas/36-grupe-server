@@ -24,8 +24,8 @@ class PageLogin extends PageTemplate {
                                     <input id="email" data-validation="email" type="text" placeholder="Type email" value="chuck@norris.com" required>
                                 </div>
                                 <div class="form-row">
-                                    <label for="pass">Password</label>
-                                    <input id="pass" data-validation="password" type="password" placeholder="Type password" value="chuckchuckchuck" required>
+                                    <label for="password">Password</label>
+                                    <input id="password" data-validation="password" type="password" placeholder="Type password" value="chuckchuckchuck" required>
                                 </div>
                                 <div class="form-row">
                                     <button type="submit" class="btn">Log in</button>

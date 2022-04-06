@@ -1,12 +1,16 @@
 const handler = {};
 
-handler.account = (data) => {
+handler.account = (data, callback) => {
     const acceptableMethods = ['get', 'post', 'put', 'delete'];
 
     if (acceptableMethods.includes(data.httpMethod)) {
-        console.log('Account: veiksmas leistinas');
+        return callback(200, {
+            status: 'OK',
+            msg: 'Account: veiksmas leistinas',
+            time: Date.now(),
+        });
     } else {
-        console.log('Account: veiksmas NEleistinas');
+        return callback(400, 'Account: veiksmas NEleistinas');
     }
 }
 

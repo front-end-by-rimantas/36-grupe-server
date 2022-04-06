@@ -31,14 +31,24 @@ submitDOM.addEventListener('click', (e) => {
         formData[id] = value;
     }
 
-    if (formData.password !== formData.repass) {
+    if (formData.password
+        && formData.repass
+        && formData.password !== formData.repass) {
         errors.push('Nesutampa slaptazodziai');
     }
     errorsDOM.innerText = errors.join('\r\n');
 
     if (errors.length === 0) {
         delete formData.repass;
-        console.log('SIUNCIAME I SERVERI:', formData);
-    }
 
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                const data = JSON.parse(this.responseText);
+                console.log(data);
+            }
+        };
+        xhttp.open("GET", "/api", true);
+        xhttp.send();
+    }
 })

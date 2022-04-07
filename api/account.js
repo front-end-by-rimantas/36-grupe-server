@@ -94,10 +94,38 @@ handler._method.post = async (data, callback) => {
     })
 }
 
-handler._method.get = (data, callback) => {
+handler._method.get = async (data, callback) => {
+    const url = data.trimmedPath;
+    const email = url.split('/')[2];
+
+    const [emailError, emailMsg] = IsValid.email(email);
+    if (emailError) {
+        return callback(200, {
+            status: 'Error',
+            msg: emailMsg,
+        })
+    }
+
+    let [err, content] = await file.read('accounts', email + '.json');
+    if (err) {
+        return callback(200, {
+            status: 'Error',
+            msg: 'Nepavyko rasti norimo vartotojo duomenu',
+        })
+    }
+
+    content = utils.parseJSONtoObject(content);
+    if (!content) {
+        return callback(200, {
+            status: 'Error',
+            msg: 'Nepavyko apdoroti vartotojo duomenu',
+        })
+    }
+    delete content.password;
+
     return callback(200, {
-        action: 'GET',
-        msg: 'Stai tau visa info apie dominanti vartotoja',
+        status: 'Success',
+        msg: JSON.stringify(content),
     })
 }
 

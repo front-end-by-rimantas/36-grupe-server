@@ -1,5 +1,6 @@
 import { file } from "../lib/file.js";
 import { IsValid } from "../lib/IsValid.js";
+import { utils } from "../lib/utils.js";
 
 const handler = {};
 
@@ -48,16 +49,47 @@ handler._method.post = async (data, callback) => {
     }
 
     // 2) nuskaitome kokie failai yra .data/accounts folderyje
-    const accountsList = await file.list('accounts');
-    console.log(accountsList);
+    const [accountsListError, accountsList] = await file.list('accounts');
+
+    if (accountsListError) {
+        return callback(500, {
+            status: 'Error',
+            msg: 'Ivyko klaida bandant registruoti vartotoja',
+        })
+    }
 
     // 3) patikrinti ar nera failo [email].json (jau sukurtas account'as)
-    // 4) uzsifruoti vartotojo slaptazodi
-    // 5) sukuriame [email].json ir i ji irasome vartotojo objekta
+    const userFile = user.email + '.json';
 
-    console.log(data.payload);
+    if (accountsList.includes(userFile)) {
+        return callback(200, {
+            status: 'Error',
+            msg: 'Vartotojas tokiu el pastu jau uzregistruotas',
+        })
+    }
+
+    // 4) uzsifruoti vartotojo slaptazodi
+    user.password = utils.hash(user.password);
+
+    // 5) irasyti papildomos informacijos: registracijos laikas
+    const now = Date.now();
+    user.registerDate = now;
+    user.lastPasswordUpdate = now;
+    user.passwordChanges = 0;
+    user.lastLoginDate = 0;
+    user.loginHistory = [];
+
+    // 6) sukuriame [email].json ir i ji irasome vartotojo objekta
+    const [userCreateError] = await file.create('accounts', userFile, user);
+    if (userCreateError) {
+        return callback(200, {
+            status: 'Error',
+            msg: 'Klaida bandant irasyti vartotojo duomenis',
+        })
+    }
+
     return callback(200, {
-        action: 'POST',
+        status: 'Success',
         msg: 'Vartotojo paskyra sukurta sekmingai',
     })
 }

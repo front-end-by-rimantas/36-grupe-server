@@ -1,3 +1,5 @@
+import { IsValid } from "../lib/IsValid.js";
+
 const handler = {};
 
 handler.account = (data, callback) => {
@@ -13,6 +15,46 @@ handler.account = (data, callback) => {
 handler._method = {};
 
 handler._method.post = (data, callback) => {
+    const minUsernameLength = 4;
+    const maxUsernameLength = 20;
+
+    // 1) reikia patikrinti ar data.payload (keys and values) yra teisingi
+    const user = data.payload;
+    if (typeof user !== 'object' || Object.keys(user).length !== 3) {
+        return callback(200, {
+            status: 'Error',
+            msg: 'Vartotojo objekta sudaro tik 3 elementai (username, email, password)',
+        })
+    }
+
+    const [usernameError, usernameMsg] = IsValid.username(user.username);
+    if (usernameError) {
+        return callback(200, {
+            status: 'Error',
+            msg: usernameMsg,
+        })
+    }
+    const [emailError, emailMsg] = IsValid.email(user.email);
+    if (emailError) {
+        return callback(200, {
+            status: 'Error',
+            msg: emailMsg,
+        })
+    }
+    const [passwordError, passwordMsg] = IsValid.password(user.password);
+    if (passwordError) {
+        return callback(200, {
+            status: 'Error',
+            msg: passwordMsg,
+        })
+    }
+
+    // 2) nuskaitome kokie failai yra .data/accounts folderyje
+    // 3) patikrinti ar nera failo [email].json (jau sukurtas account'as)
+    // 4) uzsifruoti vartotojo slaptazodi
+    // 5) sukuriame [email].json ir i ji irasome vartotojo objekta
+
+    console.log(data.payload);
     return callback(200, {
         action: 'POST',
         msg: 'Vartotojo paskyra sukurta sekmingai',

@@ -152,14 +152,15 @@ handler._method.put = (data, callback) => {
 
     const { username, password } = data.payload;
     let updatedValues = 0;
+    let newUserData = {};
 
     if (username && IsValid.username(username)) {
-        // pakeisime username
+        newUserData = { ...newUserData, username };
         updatedValues++;
     }
 
     if (password && IsValid.password(password)) {
-        // pakeisime password
+        newUserData = { ...newUserData, password };
         updatedValues++;
     }
 

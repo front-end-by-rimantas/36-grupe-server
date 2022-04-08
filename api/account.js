@@ -16,6 +16,9 @@ handler.account = async (data, callback) => {
 
 handler._method = {};
 
+/**
+ * Vartotojo paskyros sukurimas
+ */
 handler._method.post = async (data, callback) => {
     // 1) reikia patikrinti ar data.payload (keys and values) yra teisingi
     const user = data.payload;
@@ -94,6 +97,9 @@ handler._method.post = async (data, callback) => {
     })
 }
 
+/**
+ * Vartotojo informacijos gavimas
+ */
 handler._method.get = async (data, callback) => {
     const url = data.trimmedPath;
     const email = url.split('/')[2];
@@ -129,13 +135,50 @@ handler._method.get = async (data, callback) => {
     })
 }
 
+/**
+ * Vartotojo informacijos atnaujinimas
+ */
 handler._method.put = (data, callback) => {
+    const url = data.trimmedPath;
+    const email = url.split('/')[2];
+
+    const [emailError, emailMsg] = IsValid.email(email);
+    if (emailError) {
+        return callback(200, {
+            status: 'Error',
+            msg: emailMsg,
+        })
+    }
+
+    const { username, password } = data.payload;
+    let updatedValues = 0;
+
+    if (username && IsValid.username(username)) {
+        // pakeisime username
+        updatedValues++;
+    }
+
+    if (password && IsValid.password(password)) {
+        // pakeisime password
+        updatedValues++;
+    }
+
+    if (!updatedValues) {
+        return callback(200, {
+            status: 'Error',
+            msg: 'Objekte nerasta informacijos, kuria butu leidziama atnaujinti, todel niekas nebuvo atnaujinta',
+        })
+    }
+
     return callback(200, {
         action: 'PUT',
         msg: 'Vartotojo informacija sekmingai atnaujinta',
     })
 }
 
+/**
+ * Vartotojo paskyros istrinimas
+ */
 handler._method.delete = (data, callback) => {
     return callback(200, {
         action: 'DELETE',

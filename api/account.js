@@ -138,7 +138,7 @@ handler._method.get = async (data, callback) => {
 /**
  * Vartotojo informacijos atnaujinimas
  */
-handler._method.put = (data, callback) => {
+handler._method.put = async (data, callback) => {
     const url = data.trimmedPath;
     const email = url.split('/')[2];
 
@@ -160,7 +160,7 @@ handler._method.put = (data, callback) => {
     }
 
     if (password && IsValid.password(password)) {
-        newUserData = { ...newUserData, password };
+        newUserData = { ...newUserData, password: utils.hash(password) };
         updatedValues++;
     }
 
@@ -171,8 +171,37 @@ handler._method.put = (data, callback) => {
         })
     }
 
+    const [readErr, readMsg] = await file.read('accounts', email + '.json');
+    if (readErr) {
+        return callback(500, {
+            status: 'Error',
+            msg: 'Nepavyko gauti vartotojo informacijos, kuria bandoma atnaujinti',
+        })
+    }
+
+    const userObj = utils.parseJSONtoObject(readMsg);
+    if (!userObj) {
+        return callback(500, {
+            status: 'Error',
+            msg: 'Ivyko klaida, bandant nuskaityti vartotojo informacija',
+        })
+    }
+
+    const updatedUserData = {
+        ...userObj,
+        ...newUserData,
+    }
+
+    const [updateErr] = await file.update('accounts', email + '.json', updatedUserData);
+    if (updateErr) {
+        return callback(500, {
+            status: 'Error',
+            msg: 'Nepavyko atnaujinti vartotojo informacijos',
+        })
+    }
+
     return callback(200, {
-        action: 'PUT',
+        status: 'Success',
         msg: 'Vartotojo informacija sekmingai atnaujinta',
     })
 }

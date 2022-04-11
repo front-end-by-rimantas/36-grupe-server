@@ -17,6 +17,7 @@ handler._method = {};
 handler._method.post = (data, callback) => {
     const user = data.payload;
     const { email, password } = user;
+    const requiredKeys = 2;
 
     const [emailErr, emailMsg] = IsValid.email(email);
     if (emailErr) {
@@ -34,7 +35,12 @@ handler._method.post = (data, callback) => {
         })
     }
 
-    console.log(user);
+    if (requiredKeys !== Object.keys(user).length) {
+        return callback(400, {
+            status: 'Error',
+            msg: 'Netinkama objekto struktura (turi buti tik: email, password)',
+        })
+    }
 
     return callback(200, {
         action: 'POST',

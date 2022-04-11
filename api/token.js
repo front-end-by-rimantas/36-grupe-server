@@ -84,12 +84,25 @@ handler._method.post = async (data, callback) => {
         })
     }
 
+    const cookies = [
+        'login-token=' + tokenID,
+        'path=/',
+        'domain=localhost',
+        'max-age=' + config.cookiesMaxAge,
+        'expires=Sun, 16 Jul 3567 06:23:41 GMT',
+        // 'Secure',
+        'SameSite=Lax',
+        'HttpOnly'
+    ];
+
     return callback(200, {
         status: 'Success',
         msg: {
             id: tokenID,
             ...token
         },
+    }, {
+        'Set-Cookie': cookies.join('; '),
     })
 }
 

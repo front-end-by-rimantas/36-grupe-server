@@ -1,3 +1,5 @@
+import { IsValid } from "../lib/IsValid.js";
+
 const handler = {};
 
 handler.token = (data, callback) => {
@@ -13,6 +15,27 @@ handler.token = (data, callback) => {
 handler._method = {};
 
 handler._method.post = (data, callback) => {
+    const user = data.payload;
+    const { email, password } = user;
+
+    const [emailErr, emailMsg] = IsValid.email(email);
+    if (emailErr) {
+        return callback(400, {
+            status: 'Error',
+            msg: emailMsg,
+        })
+    }
+
+    const [passwordErr, passwordMsg] = IsValid.password(password);
+    if (passwordErr) {
+        return callback(400, {
+            status: 'Error',
+            msg: passwordMsg,
+        })
+    }
+
+    console.log(user);
+
     return callback(200, {
         action: 'POST',
         msg: 'Vartotojui isduotas sesijos TOKEN',

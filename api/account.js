@@ -131,7 +131,7 @@ handler._method.get = async (data, callback) => {
 
     return callback(200, {
         status: 'Success',
-        msg: JSON.stringify(content),
+        msg: content,
     })
 }
 
@@ -209,9 +209,28 @@ handler._method.put = async (data, callback) => {
 /**
  * Vartotojo paskyros istrinimas
  */
-handler._method.delete = (data, callback) => {
+handler._method.delete = async (data, callback) => {
+    const url = data.trimmedPath;
+    const email = url.split('/')[2];
+
+    const [emailError, emailMsg] = IsValid.email(email);
+    if (emailError) {
+        return callback(200, {
+            status: 'Error',
+            msg: emailMsg,
+        })
+    }
+
+    const [deleteErr] = await file.delete('accounts', email + '.json');
+    if (deleteErr) {
+        return callback(500, {
+            status: 'Error',
+            msg: 'Nepavyko istrinti vartotojo',
+        })
+    }
+
     return callback(200, {
-        action: 'DELETE',
+        status: 'Success',
         msg: 'Vartotojas sekmingai istrinta is sistemos',
     })
 }

@@ -1,6 +1,7 @@
 import { file } from "../lib/file.js";
 import { IsValid } from "../lib/IsValid.js";
 import { utils } from "../lib/utils.js";
+import config from '../config.js';
 
 const handler = {};
 
@@ -68,9 +69,14 @@ handler._method.post = async (data, callback) => {
         })
     }
 
-    const token = {};
+    const tokenID = utils.randomString(config.sessionTokenLength);
+    const token = {
+        expire: Date.now() + config.cookiesMaxAge * 1000,
+        email: email,
+        browser: 'chrome',
+    };
 
-    const [createErr] = await file.create('token', 'token.json', token);
+    const [createErr] = await file.create('token', tokenID + '.json', token);
     if (createErr) {
         return callback(500, {
             status: 'Error',
@@ -80,7 +86,10 @@ handler._method.post = async (data, callback) => {
 
     return callback(200, {
         status: 'Success',
-        msg: token,
+        msg: {
+            id: tokenID,
+            ...token
+        },
     })
 }
 

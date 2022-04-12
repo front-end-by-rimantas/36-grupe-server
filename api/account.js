@@ -94,6 +94,10 @@ handler._method.post = async (data, callback) => {
     return callback(200, {
         status: 'Success',
         msg: 'Vartotojo paskyra sukurta sekmingai',
+        action: {
+            type: 'redirect',
+            href: '/login',
+        },
     })
 }
 

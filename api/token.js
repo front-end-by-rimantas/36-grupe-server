@@ -127,4 +127,14 @@ handler._method.delete = (data, callback) => {
     })
 }
 
+handler._method.verify = async (token) => {
+    if (typeof token !== 'string'
+        || token.length !== config.sessionTokenLength) {
+        return false;
+    }
+
+    const [readErr] = await file.read('token', token + '.json');
+    return !readErr;
+}
+
 export default handler;

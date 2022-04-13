@@ -155,4 +155,34 @@ handler._method.verify = async (token) => {
     return true;
 }
 
+handler._method.getUserDetails = async (token) => {
+    if (typeof token !== 'string'
+        || token.length !== config.sessionTokenLength) {
+        return {};
+    }
+
+    const [readErr, readContent] = await file.read('token', token + '.json');
+    if (readErr) {
+        return {};
+    }
+
+    const tokenObj = utils.parseJSONtoObject(readContent);
+    if (!tokenObj) {
+        return {};
+    }
+
+    const { email } = tokenObj;
+    const [userErr, userContent] = await file.read('accounts', email + '.json');
+    if (userErr) {
+        return {};
+    }
+
+    const userObj = utils.parseJSONtoObject(userContent);
+    if (!userObj) {
+        return {};
+    }
+
+    return userObj;
+}
+
 export default handler;

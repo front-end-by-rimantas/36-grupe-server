@@ -137,8 +137,22 @@ handler._method.verify = async (token) => {
         return false;
     }
 
-    const [readErr] = await file.read('token', token + '.json');
-    return !readErr;
+    const [readErr, readContent] = await file.read('token', token + '.json');
+    if (readErr) {
+        return false;
+    }
+
+    const obj = utils.parseJSONtoObject(readContent);
+    if (!obj) {
+        return false;
+    }
+
+    if (obj.expire < Date.now()) {
+        await file.delete('token', token + '.json');
+        return false;
+    }
+
+    return true;
 }
 
 export default handler;

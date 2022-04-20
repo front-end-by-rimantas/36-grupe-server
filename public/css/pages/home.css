@@ -1,0 +1,32 @@
+/* base */
+@import '../base/base.css';
+@import '../base/layout.css';
+
+/* 3rd-party */
+@import '../3rd-party/font-awesome.min.css';
+
+/* components */
+@import '../components/button.css';
+@import '../components/form.css';
+@import '../components/header.css';
+@import '../components/hero.css';
+@import '../components/services.css';
+
+/* CUSTOM STYLE GOES BELOW THIS COMMENT LINE */
+
+/* contacts start */
+.contacts .row {
+    display: grid;
+    gap: 60px;
+}
+@media (min-width: 500px) {
+    .contacts img {
+        width: 70%;
+    }
+}
+@media (min-width: 800px) {
+    .contacts .row {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+/* contacts end */

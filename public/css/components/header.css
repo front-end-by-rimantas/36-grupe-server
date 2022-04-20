@@ -1,0 +1,26 @@
+.header {
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 8px #0002;
+}
+.header > .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header .logo {
+    height: 30px;
+    width: 100px;
+    object-fit: contain;
+    object-position: left;
+}
+.header nav {
+    display: flex;
+    gap: 20px;
+    flex-shrink: 0;
+}
+.header nav > a {
+    flex-shrink: 0;
+}

@@ -1,0 +1,42 @@
+.blog-list {
+}
+.blog-list > .title {
+    text-align: center;
+    font-size: 4em;
+}
+.blog-list > .empty-list {
+    padding: 2em;
+    text-align: center;
+    font-size: 2em;
+    background-color: rgb(255, 204, 184);
+    border: 2px solid coral;
+}
+.blog-list > .list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+}
+.blog-list > .list > .post {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px #0002;
+    overflow: hidden;
+    transition: all 0.3s;
+    word-break: break-word;
+}
+.blog-list > .list > .post:hover {
+    box-shadow: 0 8px 20px #0004;
+}
+.blog-list .post > .post-title {
+    padding: 10px 20px;
+}
+.blog-list .post > .post-description {
+    padding: 0 20px;
+}
+.blog-list .post > .read-more {
+    display: inline-block;
+    padding: 10px 20px 20px;
+}
+.blog-list .read-more > .icon {
+    display: inline-block;
+    padding: 10px 20px 20px;
+}

@@ -6,14 +6,16 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon",
-    "production": "nodemon",
-    "tester": "nodemon",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "NODE_ENV=production node .",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config ./jest.config.js --watchAll --passWithNoTests",
+    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config ./jest.coverage.config.js --watchAll --passWithNoTests"
   },
   "keywords": [],
   "author": "Rimantas",
   "license": "MIT",
   "devDependencies": {
+    "jest": "^27.5.0",
+    "node-notifier": "^10.0.1",
     "nodemon": "^2.0.15"
   }
 }

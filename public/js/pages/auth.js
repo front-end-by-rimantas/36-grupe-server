@@ -51,6 +51,10 @@ submitDOM.addEventListener('click', (e) => {
                         location.href = data.action.href;
                     }
                 }
+
+                if (data.status === 'Error') {
+                    errorsDOM.innerText = data.msg;
+                }
             }
         };
         xhttp.open("POST", formDOM.action, true);

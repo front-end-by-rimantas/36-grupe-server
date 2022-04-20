@@ -14,6 +14,7 @@ environments.dev = {
     password: 'demo-password',
     hashingSecret: '847jh5ge2r54yj152ty8y4',
     cookiesMaxAge: 3600,
+    sessionTokenLength: 10,
 }
 
 environments.production = {
@@ -30,6 +31,7 @@ environments.production = {
     password: 'fretr48t521e4rteye52',
     hashingSecret: '5r4ku1y52h4115847ry15284f',
     cookiesMaxAge: 7776000,
+    sessionTokenLength: 100,
 }
 
 environments.test = {
@@ -46,6 +48,7 @@ environments.test = {
     password: 'esttoo',
     hashingSecret: 'u4k1hg5284yjFh51847ey15gy',
     cookiesMaxAge: 60,
+    sessionTokenLength: 20,
 }
 
 // NODE_ENV=production node . -> environments.production

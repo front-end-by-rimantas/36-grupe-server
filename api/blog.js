@@ -20,6 +20,59 @@ handler._method = {};
  * Blog post sukurimas
  */
 handler._method.post = async (data, callback) => {
+    const post = data.payload;
+    if (typeof post !== 'object' || Object.keys(post).length !== 3) {
+        return callback(200, {
+            status: 'Error',
+            msg: 'Blog post objekta sudaro tik 3 elementai (title, slug, content)',
+        })
+    }
+
+    const [titleError, titleMsg] = IsValid.title(post.title);
+    if (titleError) {
+        return callback(200, {
+            status: 'Error',
+            msg: titleMsg,
+        })
+    }
+    const [slugError, slugMsg] = IsValid.slug(post.slug);
+    if (slugError) {
+        return callback(200, {
+            status: 'Error',
+            msg: slugMsg,
+        })
+    }
+    const [contentError, contentMsg] = IsValid.content(post.content);
+    if (contentError) {
+        return callback(200, {
+            status: 'Error',
+            msg: contentMsg,
+        })
+    }
+
+    const [blogListError, blogList] = await file.list('blog');
+    if (blogListError) {
+        return callback(500, {
+            status: 'Error',
+            msg: 'Ivyko klaida bandant kurti blog posta',
+        })
+    }
+
+    const postFile = post.slug + '.json';
+    if (blogList.includes(postFile)) {
+        return callback(200, {
+            status: 'Error',
+            msg: 'Blog postas su tokia nuoroda (slug) jau sukurtas',
+        })
+    }
+
+    const now = Date.now();
+    post.registerDate = now;
+    post.lastUpdated = now;
+    post.author = 'petras@mail.com';
+
+    console.log(data);
+
     return callback(200, {
         status: 'Success',
         msg: 'Blog post sukurtas sekmingai',

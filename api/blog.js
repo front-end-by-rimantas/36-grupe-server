@@ -69,9 +69,15 @@ handler._method.post = async (data, callback) => {
     const now = Date.now();
     post.registerDate = now;
     post.lastUpdated = now;
-    post.author = 'petras@mail.com';
+    post.author = data.user.email;
 
-    console.log(data);
+    const [postCreateError] = await file.create('blog', postFile, post);
+    if (postCreateError) {
+        return callback(200, {
+            status: 'Error',
+            msg: 'Klaida bandant irasyti blog posta',
+        })
+    }
 
     return callback(200, {
         status: 'Success',

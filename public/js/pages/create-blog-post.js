@@ -2,7 +2,7 @@ import { IsValid } from '../components/is-valid/IsValid.js';
 
 const formDOM = document.querySelector('.form');
 const errorsDOM = formDOM.querySelector('.form-errors');
-const allInputsDOM = formDOM.querySelectorAll('input');
+const allInputsDOM = formDOM.querySelectorAll('input, textarea');
 const submitDOM = formDOM.querySelector('button');
 
 submitDOM.addEventListener('click', (e) => {
@@ -13,6 +13,7 @@ submitDOM.addEventListener('click', (e) => {
     for (const inputDOM of allInputsDOM) {
         const { id, value, dataset } = inputDOM;
         const validationRule = IsValid[dataset.validation];
+        console.log(validationRule);
         const [err, status] = validationRule(value);
         if (err) {
             errors.push(status);

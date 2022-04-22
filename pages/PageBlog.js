@@ -1,4 +1,6 @@
+import { file } from "../lib/file.js";
 import { PageTemplate } from "../lib/PageTemplate.js";
+import { utils } from "../lib/utils.js";
 
 class PageBlog extends PageTemplate {
     /**
@@ -11,42 +13,69 @@ class PageBlog extends PageTemplate {
         this.pageCSSfileName = 'blog';
     }
 
+    async getBlogData() {
+        const [listErr, list] = await file.list('blog');
+        if (listErr) {
+            return [];
+        }
+
+        const blogData = [];
+
+        for (const fileName of list) {
+            if (fileName[0] === '.') {
+                continue;
+            }
+
+            const [readErr, readContent] = await file.read('blog', fileName);
+            if (readErr) {
+                continue;
+            }
+
+            const obj = utils.parseJSONtoObject(readContent);
+            if (!obj) {
+                continue;
+            }
+            blogData.push(obj);
+        }
+
+        return blogData;
+    }
+
     emptyListHTML() {
         return `<div class="row empty-list">Looks like blog list is empty right now 🤔👀😭</div>`;
     }
 
-    blogListHTML() {
-        return `<div class="row list">
-                    <div class="post">
-                        <h2 class="post-title">Straipsnis</h2>
-                        <div class="post-description">Straipsnio mini aprasas</div>
-                        <a class="read-more">Read more<i class="icon fa fa-angle-right"></i></a>
-                    </div>
-                    <div class="post">
-                        <h2 class="post-title">Straipsnis</h2>
-                        <div class="post-description">Straipsnio mini aprasas</div>
-                        <a class="read-more">Read more<i class="icon fa fa-angle-right"></i></a>
-                    </div>
-                    <div class="post">
-                        <h2 class="post-title">Straipsnis</h2>
-                        <div class="post-description">Straipsnio mini aprasas</div>
-                        <a class="read-more">Read more<i class="icon fa fa-angle-right"></i></a>
-                    </div>
-                    <div class="post">
-                        <h2 class="post-title">Straipsnis</h2>
-                        <div class="post-description">Straipsnio mini aprasas</div>
-                        <a class="read-more">Read more<i class="icon fa fa-angle-right"></i></a>
-                    </div>
-                    <div class="post">
-                        <h2 class="post-title">Straipsnis</h2>
-                        <div class="post-description">Straipsnio mini aprasas</div>
-                        <a class="read-more">Read more<i class="icon fa fa-angle-right"></i></a>
-                    </div>
-                </div>`;
+    blogListHTML(data) {
+        let HTML = '';
+
+        for (const post of data) {
+            HTML += `<div class="post">
+                        <h2 class="post-title">${post.title}</h2>
+                        <div class="post-description">${this.shortenText(post.content)}</div>
+                        <a href="/blog/${post.slug}" class="read-more">Read more<i class="icon fa fa-angle-right"></i></a>
+                    </div>`;
+        }
+
+        return `<div class="row list">${HTML}</div>`;
     }
 
-    mainHTML() {
-        const blogFiles = [];
+    shortenText(text) {
+        const limit = 100;
+        const hardLimit = 130;
+        if (text.length < hardLimit) {
+            return text;
+        }
+
+        let partText = text.slice(0, limit);
+        partText = partText.split('').reverse().join('');
+        partText = partText.slice(partText.indexOf(' ') + 1);
+        partText = partText.split('').reverse().join('');
+
+        return partText + '...';
+    }
+
+    async mainHTML() {
+        const blogFiles = await this.getBlogData();
         return `<section class="container blog-list">
                     <h1 class="row title">My blog</h1>
                     ${blogFiles.length === 0 ? this.emptyListHTML() : this.blogListHTML(blogFiles)}

@@ -38,7 +38,7 @@ class PageBlog extends PageTemplate {
             blogData.push(obj);
         }
 
-        return blogData;
+        return blogData.sort((a, b) => b.lastUpdated - a.lastUpdated);
     }
 
     emptyListHTML() {

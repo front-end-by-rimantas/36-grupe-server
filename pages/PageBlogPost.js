@@ -34,15 +34,6 @@ class PageBlogPost extends PageTemplate {
                 </section>`;
     }
 
-    isValidPost(post) {
-        if (typeof post !== 'object'
-            || Array.isArray(post)
-            || post === null) {
-            return false;
-        }
-        return true;
-    }
-
     mainHTML() {
         const postData = this.getPostData();
         if (this.isValidPost(postData)) {
